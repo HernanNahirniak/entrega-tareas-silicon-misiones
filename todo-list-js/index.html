@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Tareas — TP Clase 13 (DOM)</title>
+    <style>
+      /* ===== Estilos base (ya hechos, no hace falta que los toques) ===== */
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: #f1f2f2;
+        color: #20203a;
+        display: flex;
+        justify-content: center;
+        padding: 40px 16px;
+      }
+      .app {
+        background: #fff;
+        width: 100%;
+        max-width: 440px;
+        border-radius: 14px;
+        box-shadow: 0 10px 30px rgba(43, 41, 109, 0.12);
+        padding: 26px;
+      }
+      h1 {
+        color: #2b296d;
+        font-size: 22px;
+        margin: 0 0 4px;
+      }
+      .sub {
+        color: #6e6e80;
+        font-size: 13px;
+        margin: 0 0 20px;
+      }
+      .fila {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      #nuevaTarea {
+        flex: 1;
+        padding: 11px 12px;
+        border: 1.5px solid #cfd0da;
+        border-radius: 8px;
+        font-size: 15px;
+      }
+      #nuevaTarea:focus {
+        outline: none;
+        border-color: #0e6689;
+      }
+      #agregar {
+        background: #0e6689;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 0 18px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      #agregar:hover {
+        background: #0b4f68;
+      }
+      #lista {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      #lista li {
+        background: #f7f7fa;
+        border: 1px solid #e7e7ee;
+        border-radius: 8px;
+        padding: 11px 12px;
+        margin-bottom: 8px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      /* Clase para tachar una tarea hecha. La activás desde el JS con classList */
+      #lista li.hecha {
+        text-decoration: line-through;
+        color: #9a9aab;
+        background: #efeff3;
+      }
+      #contador {
+        color: #2b296d;
+        font-weight: 600;
+        font-size: 14px;
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <h1>Mi Lista de Tareas</h1>
+      <p class="sub">TP Clase 13 · El DOM</p>
+
+      <!-- input + botón para agregar -->
+      <div class="fila">
+        <input id="nuevaTarea" type="text" placeholder="Escribí una tarea..." />
+        <button id="agregar">Agregar</button>
+      </div>
+
+      <!-- acá se van a ir agregando las tareas (las crea el JS) -->
+      <ul id="lista"></ul>
+
+      <!-- contador de tareas -->
+      <p id="contador">Tareas: 0</p>
+    </div>
+
+    <script>
+      // ============================================================
+      //  TP CLASE 13 — LISTA DE TAREAS
+      //  Completá los TODO. Probá en el navegador y mirá la consola (F12).
+      // ============================================================
+
+      // 1) SELECCIONAR los elementos que vas a usar
+      //    Pista: usá document.querySelector("#id")
+
+      let input = document.querySelector("#nuevaTarea");
+      let boton = document.querySelector("#agregar");
+      let lista = document.querySelector("#lista");
+      let contador = document.querySelector("#contador");
+
+      // 2) Una función que actualiza el texto del contador
+      //    Muestra las tareas pendientes
+
+      function actualizarContador() {
+        let pendientes = 0;
+
+        for (let i = 0; i < lista.children.length; i++) {
+          if (!lista.children[i].classList.contains("hecha")) {
+            pendientes++;
+          }
+        }
+
+        contador.textContent = "Tareas: " + pendientes;
+      }
+
+      // 3) EVENTO: cuando se hace click en "Agregar", crear una tarea
+
+      boton.addEventListener("click", function () {
+        let texto = input.value.trim();
+
+        // BONUS: si el texto está vacío, no agregar nada
+
+        if (texto === "") {
+          return;
+        }
+
+        // NIVEL 1: crear un <li>, ponerle el texto
+        // y agregarlo a la lista
+
+        let li = document.createElement("li");
+
+        li.textContent = texto;
+
+        lista.appendChild(li);
+
+        // NIVEL 2: al hacer click en el <li>,
+        // marcarlo como hecho
+
+        li.addEventListener("click", function () {
+          li.classList.toggle("hecha");
+
+          actualizarContador();
+        });
+
+        // BONUS: botón para eliminar la tarea
+
+        let botonEliminar = document.createElement("button");
+
+        botonEliminar.textContent = "Eliminar";
+
+        botonEliminar.addEventListener("click", function (e) {
+          e.stopPropagation();
+
+          li.remove();
+
+          actualizarContador();
+        });
+
+        li.appendChild(botonEliminar);
+
+        // Limpiar el input
+
+        input.value = "";
+
+        // Actualizar el contador
+
+        actualizarContador();
+      });
+
+      // BONUS: permitir agregar con la tecla Enter
+
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          boton.click();
+        }
+      });
+    </script>
+  </body>
+</html>
+
