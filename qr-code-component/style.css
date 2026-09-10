@@ -1,0 +1,80 @@
+:root {
+    --color-fondo: #CFE8E8;
+    --color-fondo-secundario: #fff;
+    --fuente-principal: "Helvetica Neue", sans-serif;
+    --color-secundario: rgb(77, 69, 69);
+    --color-sombra: rgba(93, 81, 81, 0.64);
+    --color-sombra-fuerte: rgba(150,134,134,0.64);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+ }
+ 
+ body {
+    background-color: var(--color-fondo);
+    font-family: var(--fuente-principal);
+    font-size: small;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    background-color: #CFE8E8;
+}
+
+ .card{
+    background-color: var(--color-fondo-secundario);
+    padding: 16px;
+    text-align: center ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 220px;
+    border-radius: 20px;
+    box-shadow: 15px 10px 8px -5px var(--color-sombra);
+
+ }
+
+ .card img{
+    border-radius: 20px;
+    width: 100%;
+    padding: 20px;
+    
+ }
+
+ .card h1{
+    margin: 20px;
+    font-size: 15px;
+    text-align: center;
+
+ }
+
+ .card p{
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 10px;
+    color: var(--color-secundario);
+    
+ }
+
+@media(min-width:768px){
+    .card{
+        max-width: 380px;
+        box-shadow: 10px 5px 4px -5px var(--color-sombra-fuerte) ;
+        transition: box-shadow 0.4s ease-in-out;
+    }
+
+    .card:hover {
+        box-shadow: 15px 10px 8px -5px var(--color-sombra);
+    }
+    
+    .card h1{
+        font-size: 20px;
+    }
+    .card p{
+        font-size: 15px;
+    }
+}
